@@ -1,0 +1,5 @@
+To get started download this repo to your local machine
+In your terminal/command line navigate to the directory it is saved in
+run these commands
+    npm install
+    npm run dev
