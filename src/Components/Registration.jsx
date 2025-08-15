@@ -2,12 +2,14 @@ import NavBar from "../routes/NavBar";
 import { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useFormik } from "formik";
+import { useContext } from "react";
+import { UserContext } from "../Context/userContext";
 
 export default function Registration() {
+const { registerUser } = useContext(UserContext);
 
-      {
-        /*validation*/
-      }
+      //validation
+
       const validate = (values) => {
         const errors = {};
     
@@ -50,7 +52,12 @@ export default function Registration() {
         },
         validate,
         onSubmit: (values) => {
-          alert(JSON.stringify(values, null, 2));
+            const result = registerUser(values);
+            if (result.success){
+                alert("Registered Successfully");
+            }else{
+                alert(result.message);
+            }
         },
       });
 
@@ -62,14 +69,12 @@ export default function Registration() {
       <form onSubmit={formik.handleSubmit}>
         
         {/*userame*/}
-        <h3>
-          <label htmlFor="userName">First Name</label>
-        </h3>
         <p>
-          <input
+                <input
             id="userName"
             name="userName"
             type="text"
+            placeholder="Username"
             onChange={formik.handleChange}
             value={formik.values.userName}
           />
@@ -79,14 +84,13 @@ export default function Registration() {
         </p>
 
         {/*Email*/}
-        <h3>
-          <label htmlFor="email">Email Address</label>
-        </h3>
+
         <p>
           <input
             id="email"
             name="email"
             type="email"
+            placeholder="Email"
             onChange={formik.handleChange}
             value={formik.values.email}
           />
@@ -96,14 +100,12 @@ export default function Registration() {
         </p>
 
         {/*Password*/}
-        <h3>
-          <label htmlFor="password">Password</label>
-        </h3>
-        <p>
+               <p>
           <input
             id="password"
             name="password"
             type="password"
+            placeholder="Password"
             onChange={formik.handleChange}
             value={formik.values.password}
           />
@@ -113,14 +115,13 @@ export default function Registration() {
         </p>
 
         {/*Confirm Password*/}
-        <h3>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-        </h3>
+        
         <p>
           <input
             id="confirmPassword"
             name="confirmPassword"
             type="password"
+            placeholder="Confirm Password"
             onChange={formik.handleChange}
             value={formik.values.confirmPassword}
           />
@@ -129,7 +130,7 @@ export default function Registration() {
           )}
         </p>
 
-        <button type="submit">Submit</button>
+        <button type="submit">Register</button>
       </form>
         </div>
     );

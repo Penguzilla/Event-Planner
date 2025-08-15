@@ -4,11 +4,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './index.css'
 import App from './App.jsx'
+import { UserProvider } from './Context/userContext.jsx';
 
 import Home from "./components/Home";
 import Dashboard from "./Components/Dashboard.jsx";
 import Help from "./Components/Help.jsx";
-import Registration from "./components/Registration.jsx";
+import Registration from "./Components/Registration.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <UserProvider>
       <RouterProvider router={router} />
+      </UserProvider>
   </StrictMode>,
 )
+
+
+//Alot of the code I resused from task 10
