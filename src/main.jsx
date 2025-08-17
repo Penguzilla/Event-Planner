@@ -10,6 +10,7 @@ import Home from "./components/Home";
 import Dashboard from "./Components/Dashboard.jsx";
 import Help from "./Components/Help.jsx";
 import Registration from "./Components/Registration.jsx";
+import NewEvent from "./Components/NewEvent.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
       path: "/dashboard",
       element: <Dashboard />,
     },
+
+{
+  path: "/newEvent",
+  element: <NewEvent />,
+},
 
     {
       path: "/help",
