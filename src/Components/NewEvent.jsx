@@ -108,6 +108,7 @@ const validate = (values) => {
             <div style={{ color: "red" }}>{formik.errors.description}</div>
           )}
 </p>
+ <button type="submit">Add Event</button>
 
   </form>
 
