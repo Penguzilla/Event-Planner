@@ -8,7 +8,7 @@ export default function NavBar() {
   const { currentUser } = useContext(UserContext); //grabbing from userContext.jsx
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+    <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="mb-4">
       <Container className="justify-content-center">
         <Nav className="mx-auto text-center">
           <Nav.Link as={Link} to="/" className="mx-3">

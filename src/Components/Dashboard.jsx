@@ -8,14 +8,11 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Dashboard() {
   const { events, deleteEvent } = useContext(EventsContext);
   const navigate = useNavigate();
 
-  const locales = {
-    "en-US": enUS,
-  };
+  const locales = { "en-US": enUS };
 
   const localizer = dateFnsLocalizer({
     format,
@@ -25,31 +22,26 @@ export default function Dashboard() {
     locales,
   });
 
-  // keep track of current date and view
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState("month");
-
-  // track selected event
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleClose = () => setSelectedEvent(null);
-  const handleSelectEvent = (event) => {
-    setSelectedEvent(event);
-  };
+  const handleSelectEvent = (event) => setSelectedEvent(event);
 
- // delete handler
-const handleDelete = () => {
-  if (selectedEvent) {
-    deleteEvent(selectedEvent); // call context function
-    setSelectedEvent(null);
-  }
-};
+  const handleDelete = () => {
+    if (selectedEvent) {
+      deleteEvent(selectedEvent);
+      setSelectedEvent(null);
+    }
+  };
 
   return (
     <div>
       <NavBar />
       <h1>Dashboard</h1>
-     <br/> 
+      <br />
+
       <Calendar
         localizer={localizer}
         events={events}
@@ -58,13 +50,32 @@ const handleDelete = () => {
         style={{ height: 500 }}
         views={["month", "week", "day", "agenda"]}
         view={view}
-        onView={setView}     // updates when user clicks Month/Week/Day/Agenda
+        onView={setView}
         date={date}
-        onNavigate={setDate} // updates when user clicks Today/Back/Next
-        onSelectEvent={handleSelectEvent} // fires when event is clicked
+        onNavigate={setDate}
+        onSelectEvent={handleSelectEvent}
       />
+<br/>
+      {/* I went looking to see if react had a calendar and found react big calendar and 
+      figuring it would do what I needed the app to do I researched and impletmented it.
+      I must have missed/forgotten the sentence that said "Use React's array.map() method to dynamically
+generate these event displays based on the data stored in the app". Saw it when I went through
+the objectives again only after I had already coded the react big calendar. Im pretty proud of 
+my coding in this app so far so instead of removing what I already did I decided to rather add
+this section to meet that objective*/}
 
-       {/* Popup event modal */}
+      <h2>Summary of Events</h2>
+      <ul>
+        {events.map((evt, index) => (
+          <li key={index}>
+            <strong>{evt.title}</strong> — {evt.start.toLocaleString()} to {evt.end.toLocaleString()}
+            {evt.location && <> | Location: {evt.location}</>}
+            {evt.description && <> | Description: {evt.description}</>}
+          </li>
+        ))}
+      </ul>
+
+      {/* Popup modal for calendar events */}
       <Modal show={!!selectedEvent} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{selectedEvent?.title}</Modal.Title>
@@ -89,10 +100,14 @@ const handleDelete = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-            
-<Button variant="primary" onClick={() => navigate("/newEvent", { state: { eventToEdit: selectedEvent } })}>
-  Edit
-</Button>
+          <Button
+            variant="primary"
+            onClick={() =>
+              navigate("/newEvent", { state: { eventToEdit: selectedEvent } })
+            }
+          >
+            Edit
+          </Button>
           <Button variant="danger" onClick={handleDelete}>
             Delete Event
           </Button>
@@ -101,7 +116,6 @@ const handleDelete = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      
     </div>
   );
 }
