@@ -5,8 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './index.css'
 import App from './App.jsx'
 import { UserProvider } from './Context/userContext.jsx';
+import { EventsProvider } from "./Context/eventsContext";
 
-import Home from "./components/Home";
+import Home from "./Components/Home";
 import Dashboard from "./Components/Dashboard.jsx";
 import Help from "./Components/Help.jsx";
 import Registration from "./Components/Registration.jsx";
@@ -42,7 +43,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <UserProvider>
+      <EventsProvider>
       <RouterProvider router={router} />
+      </EventsProvider>
       </UserProvider>
   </StrictMode>,
 )

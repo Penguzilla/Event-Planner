@@ -1,20 +1,26 @@
 import NavBar from "../routes/NavBar";
 import { useContext } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
 import { useFormik } from "formik";
+import { EventsContext } from "../Context/eventsContext";
 
 
 function NewEvent() {
 
-const validate = (values) => {
-        const errors = {};
+  const { addEvent } = useContext(EventsContext);
 
-        if (!values.eventName) {
-          errors.eventName = "Required";
-        } 
-
-        return errors;
-    };
+  const validate = (values) => {
+    const errors = {};
+    if (!values.eventName) {
+      errors.eventName = "Required";
+    }
+    if (!values.date) {
+      errors.date = "Required";
+    }
+    if (!values.time) {
+      errors.time = "Required";
+    }
+    return errors;
+  };
 
     const formik = useFormik({
         initialValues: {
@@ -25,26 +31,32 @@ const validate = (values) => {
           location: "",
           
         },
-        validate,
-        onSubmit: (values) => {
-            const result = registerEvent(values);
-            if (result.success){
-                alert("Event Added");
-            }else{
-                alert(result.message);
-            }
-        },
+    validate,
+    onSubmit: (values) => {
+      // Convert form values into Calendar event
+      const startDate = new Date(`${values.date}T${values.time}`);
+      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // default 1 hour
+
+      addEvent({
+        title: values.eventName,
+        start: startDate,
+        end: endDate,
+        description: values.description,
+        location: values.location,
       });
 
-  return (
-  <div>
-  <NavBar />
-  
-  <h1>New Event</h1>;
-  <br />
-  <form onSubmit={formik.handleSubmit}>
-   <p>
-    <input
+      alert("Event Added");
+    },
+  });
+
+return (
+    <div>
+      <NavBar />
+      <h1>New Event</h1>
+      <br />
+      <form onSubmit={formik.handleSubmit}>
+        <p>
+          <input
             id="eventName"
             name="eventName"
             type="text"
@@ -55,35 +67,36 @@ const validate = (values) => {
           {formik.touched.eventName && formik.errors.eventName && (
             <div style={{ color: "red" }}>{formik.errors.eventName}</div>
           )}
-</p>
-          <p>
-    <input
+        </p>
+
+        <p>
+          <input
             id="date"
             name="date"
             type="date"
-            placeholder="Date"
             onChange={formik.handleChange}
             value={formik.values.date}
           />
           {formik.touched.date && formik.errors.date && (
             <div style={{ color: "red" }}>{formik.errors.date}</div>
           )}
-</p>
-<p>
-        <input
+        </p>
+
+        <p>
+          <input
             id="time"
             name="time"
             type="time"
-            placeholder="Time"
             onChange={formik.handleChange}
             value={formik.values.time}
           />
           {formik.touched.time && formik.errors.time && (
             <div style={{ color: "red" }}>{formik.errors.time}</div>
           )}
-</p>
-<p>
-        <input
+        </p>
+
+        <p>
+          <input
             id="location"
             name="location"
             type="text"
@@ -91,12 +104,10 @@ const validate = (values) => {
             onChange={formik.handleChange}
             value={formik.values.location}
           />
-          {formik.touched.location && formik.errors.location && (
-            <div style={{ color: "red" }}>{formik.errors.location}</div>
-          )}
-</p>
-<p>
-        <input
+        </p>
+
+        <p>
+          <input
             id="description"
             name="description"
             type="text"
@@ -104,17 +115,12 @@ const validate = (values) => {
             onChange={formik.handleChange}
             value={formik.values.description}
           />
-          {formik.touched.description && formik.errors.description && (
-            <div style={{ color: "red" }}>{formik.errors.description}</div>
-          )}
-</p>
- <button type="submit">Add Event</button>
+        </p>
 
-  </form>
-
-
-  </div>
-  )
+        <button type="submit">Add Event</button>
+      </form>
+    </div>
+  );
 }
 
 export default NewEvent;
