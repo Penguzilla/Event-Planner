@@ -2,57 +2,68 @@ import NavBar from "../routes/NavBar";
 import { useContext } from "react";
 import { useFormik } from "formik";
 import { EventsContext } from "../Context/eventsContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function NewEvent() {
+  const { addEvent, updateEvent } = useContext(EventsContext);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const { addEvent } = useContext(EventsContext);
+  // The event we are editing, if any
+  const eventToEdit = location.state?.eventToEdit;
 
   const validate = (values) => {
     const errors = {};
-    if (!values.eventName) {
-      errors.eventName = "Required";
-    }
-    if (!values.date) {
-      errors.date = "Required";
-    }
-    if (!values.time) {
-      errors.time = "Required";
-    }
+    if (!values.eventName) errors.eventName = "Required";
+    if (!values.date) errors.date = "Required";
+    if (!values.time) errors.time = "Required";
     return errors;
   };
 
-    const formik = useFormik({
-        initialValues: {
-          eventName: "",
-          date: "",
-          time: "",
-          description: "",
-          location: "",
-          
-        },
+  const formik = useFormik({
+    initialValues: {
+      eventName: eventToEdit?.title || "",
+      date: eventToEdit ? eventToEdit.start.toISOString().split("T")[0] : "",
+      time: eventToEdit
+        ? eventToEdit.start.toTimeString().split(" ")[0].slice(0, 5)
+        : "",
+      location: eventToEdit?.location || "",
+      description: eventToEdit?.description || "",
+    },
     validate,
     onSubmit: (values) => {
-      // Convert form values into Calendar event
       const startDate = new Date(`${values.date}T${values.time}`);
-      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // default 1 hour
+      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
 
-      addEvent({
-        title: values.eventName,
-        start: startDate,
-        end: endDate,
-        description: values.description,
-        location: values.location,
-      });
+      if (eventToEdit) {
+        // update existing event
+        updateEvent(eventToEdit, {
+          ...eventToEdit,
+          title: values.eventName,
+          start: startDate,
+          end: endDate,
+          location: values.location,
+          description: values.description,
+        });
+      } else {
+        addEvent({
+          title: values.eventName,
+          start: startDate,
+          end: endDate,
+          location: values.location,
+          description: values.description,
+        });
+      }
 
-      alert("Event Added");
+      navigate("/dashboard");
     },
   });
 
 return (
     <div>
       <NavBar />
-      <h1>New Event</h1>
+      <h1>{eventToEdit ? "Edit Event" : "New Event"}</h1>
       <br />
       <form onSubmit={formik.handleSubmit}>
         <p>
@@ -117,7 +128,7 @@ return (
           />
         </p>
 
-        <button type="submit">Add Event</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

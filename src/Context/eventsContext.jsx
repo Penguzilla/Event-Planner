@@ -13,8 +13,14 @@ export function EventsProvider({ children }) {
     setEvents((prev) => prev.filter((e) => e !== eventToDelete));
   }
 
+  function updateEvent(oldEvent, updatedEvent) {
+    setEvents((prev) =>
+      prev.map((evt) => (evt === oldEvent ? updatedEvent : evt))
+    );
+  }
+
   return (
-    <EventsContext.Provider value={{ events, addEvent, deleteEvent }}>
+    <EventsContext.Provider value={{ events, addEvent, deleteEvent, updateEvent }}>
       {children}
     </EventsContext.Provider>
   );

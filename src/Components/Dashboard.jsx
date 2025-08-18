@@ -6,9 +6,12 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import enUS from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Modal, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Dashboard() {
   const { events, deleteEvent } = useContext(EventsContext);
+  const navigate = useNavigate();
 
   const locales = {
     "en-US": enUS,
@@ -86,6 +89,10 @@ const handleDelete = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
+            
+<Button variant="primary" onClick={() => navigate("/newEvent", { state: { eventToEdit: selectedEvent } })}>
+  Edit
+</Button>
           <Button variant="danger" onClick={handleDelete}>
             Delete Event
           </Button>
