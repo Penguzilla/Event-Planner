@@ -117,16 +117,17 @@ return (
           />
         </p>
 
-        <p>
-          <input
-            id="description"
-            name="description"
-            type="text"
-            placeholder="Description"
-            onChange={formik.handleChange}
-            value={formik.values.description}
-          />
-        </p>
+<p>
+  <textarea
+    id="description"
+    name="description"
+    placeholder="Description"
+    onChange={formik.handleChange}
+    value={formik.values.description}
+    rows={5}   // bigger height
+    cols={40}   // bigger width
+  />
+</p>
 
         <button type="submit">Submit</button>
       </form>

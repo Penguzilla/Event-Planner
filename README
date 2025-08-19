@@ -1,5 +1,27 @@
-To get started download this repo to your local machine
-In your terminal/command line navigate to the directory it is saved in
-run these commands
-    npm install
-    npm run dev
+Event App
+
+This is an event management app that makes use of react-big-calendar.
+It was created as part of a study assignment.
+
+Getting Started
+
+Download or clone this repository to your local machine.
+
+In your terminal/command line, navigate to the project directory.
+
+Run the following commands:
+
+npm install
+npm run dev
+
+How to Use
+
+Click on the Registration button in the navigation bar to create an account.
+
+After registering, go to Home and log in.
+
+Use the New Event button in the navigation bar to add events.
+
+Open the Dashboard to view your saved events.
+
+Click the Help button for more detailed instructions on how to use the app.
