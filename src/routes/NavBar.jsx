@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { UserContext } from "../Context/userContext";
 
 export default function NavBar() {
-
   const { currentUser } = useContext(UserContext); //grabbing from userContext.jsx
 
   return (
@@ -14,23 +13,24 @@ export default function NavBar() {
           <Nav.Link as={Link} to="/" className="mx-3">
             Home
           </Nav.Link>
-        
-         {currentUser && (
-          <>
-           <Nav.Link as={Link} to="/dashboard" className="mx-3">
-            Dashboard
-          </Nav.Link>
-           <Nav.Link as={Link} to="/newEvent" className="mx-3">
-            New Event 
-          </Nav.Link> 
-          </>
-        )}
-        
+
+          {/*Only showing when logged in*/}
+          {currentUser && (
+            <>
+              <Nav.Link as={Link} to="/dashboard" className="mx-3">
+                Dashboard
+              </Nav.Link>
+              <Nav.Link as={Link} to="/newEvent" className="mx-3">
+                New Event
+              </Nav.Link>
+            </>
+          )}
+
           <Nav.Link as={Link} to="/registration" className="mx-3">
             Registration
           </Nav.Link>
           <Nav.Link as={Link} to="/help" className="mx-3">
-          Help
+            Help
           </Nav.Link>
         </Nav>
       </Container>
