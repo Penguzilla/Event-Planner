@@ -4,15 +4,16 @@ import { useFormik } from "formik";
 import { EventsContext } from "../Context/eventsContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 function NewEvent() {
+  //for context, to pass the event when edit is clicked, if no event passed you create new event
   const { addEvent, updateEvent } = useContext(EventsContext);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // The event we are editing, if any
+  // Editing event
   const eventToEdit = location.state?.eventToEdit;
 
+  //validation
   const validate = (values) => {
     const errors = {};
     if (!values.eventName) errors.eventName = "Required";
@@ -21,6 +22,7 @@ function NewEvent() {
     return errors;
   };
 
+  //Formik setup
   const formik = useFormik({
     initialValues: {
       eventName: eventToEdit?.title || "",
@@ -37,7 +39,7 @@ function NewEvent() {
       const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
 
       if (eventToEdit) {
-        // update existing event
+        // update existing event and add new event
         updateEvent(eventToEdit, {
           ...eventToEdit,
           title: values.eventName,
@@ -60,13 +62,15 @@ function NewEvent() {
     },
   });
 
-return (
+  return (
     <div>
       <NavBar />
+      {/*shows edit or new event*/}
       <h1>{eventToEdit ? "Edit Event" : "New Event"}</h1>
       <br />
       <form onSubmit={formik.handleSubmit}>
         <p>
+          {/*Name*/}
           <input
             id="eventName"
             name="eventName"
@@ -81,6 +85,7 @@ return (
         </p>
 
         <p>
+          {/*Date*/}
           <input
             id="date"
             name="date"
@@ -94,6 +99,7 @@ return (
         </p>
 
         <p>
+          {/*Time*/}
           <input
             id="time"
             name="time"
@@ -107,6 +113,7 @@ return (
         </p>
 
         <p>
+          {/*Location*/}
           <input
             id="location"
             name="location"
@@ -117,17 +124,18 @@ return (
           />
         </p>
 
-<p>
-  <textarea
-    id="description"
-    name="description"
-    placeholder="Description"
-    onChange={formik.handleChange}
-    value={formik.values.description}
-    rows={5}   // bigger height
-    cols={40}   // bigger width
-  />
-</p>
+        <p>
+          {/*Description*/}
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Description"
+            onChange={formik.handleChange}
+            value={formik.values.description}
+            rows={5} // bigger height
+            cols={40} // bigger width
+          />
+        </p>
 
         <button type="submit">Submit</button>
       </form>

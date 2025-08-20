@@ -5,6 +5,7 @@ export const EventsContext = createContext();
 export function EventsProvider({ children }) {
   const [events, setEvents] = useState([]);
 
+  //Add Event, Delete Event, Update Event
   function addEvent(newEvent) {
     setEvents((prev) => [...prev, newEvent]);
   }
@@ -20,7 +21,9 @@ export function EventsProvider({ children }) {
   }
 
   return (
-    <EventsContext.Provider value={{ events, addEvent, deleteEvent, updateEvent }}>
+    <EventsContext.Provider
+      value={{ events, addEvent, deleteEvent, updateEvent }}
+    >
       {children}
     </EventsContext.Provider>
   );

@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { UserContext } from "../Context/userContext";
 
 export default function Home() {
+  //To check credentials and store the logged-in user
   const { loginUser, currentUser } = useContext(UserContext);
 
   // Validate inputs
@@ -18,6 +19,7 @@ export default function Home() {
     return errors;
   };
 
+  //Formik setup
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -37,9 +39,7 @@ export default function Home() {
   return (
     <div>
       <NavBar /> {/* Navigation Bar */}
-
       <h1>Welcome to THE EVENT</h1>
-
       {currentUser ? (
         <h3>Logged in as {currentUser.userName}</h3>
       ) : (

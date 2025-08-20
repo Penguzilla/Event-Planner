@@ -9,9 +9,10 @@ import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
-  const { events, deleteEvent } = useContext(EventsContext);
-  const navigate = useNavigate();
+  const { events, deleteEvent } = useContext(EventsContext); //To get and delete events
+  const navigate = useNavigate(); //Navigates to the new event page from the pop up
 
+  //For the calendar
   const locales = { "en-US": enUS };
 
   const localizer = dateFnsLocalizer({
@@ -26,6 +27,7 @@ export default function Dashboard() {
   const [view, setView] = useState("month");
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  //Event handlers. Close modal, delete event, click on an event will store it in selectedEvent
   const handleClose = () => setSelectedEvent(null);
   const handleSelectEvent = (event) => setSelectedEvent(event);
 
@@ -42,6 +44,7 @@ export default function Dashboard() {
       <h1>Dashboard</h1>
       <br />
 
+      {/*Calendar*/}
       <Calendar
         localizer={localizer}
         events={events}
@@ -55,7 +58,7 @@ export default function Dashboard() {
         onNavigate={setDate}
         onSelectEvent={handleSelectEvent}
       />
-<br/>
+      <br />
       {/* I went looking to see if react had a calendar and found react big calendar and 
       figuring it would do what I needed the app to do I researched and impletmented it.
       I must have missed/forgotten the sentence that said "Use React's array.map() method to dynamically
@@ -68,7 +71,8 @@ this section to meet that objective*/}
       <ul>
         {events.map((evt, index) => (
           <li key={index}>
-            <strong>{evt.title}</strong> — {evt.start.toLocaleString()} to {evt.end.toLocaleString()}
+            <strong>{evt.title}</strong> — {evt.start.toLocaleString()} to{" "}
+            {evt.end.toLocaleString()}
             {evt.location && <> | Location: {evt.location}</>}
             {evt.description && <> | Description: {evt.description}</>}
           </li>
@@ -118,4 +122,8 @@ this section to meet that objective*/}
       </Modal>
     </div>
   );
+}
+
+{
+  /* https://jquense.github.io/react-big-calendar the react big calendar*/
 }
